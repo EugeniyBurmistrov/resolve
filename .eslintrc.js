@@ -149,6 +149,7 @@ module.exports = {
           'init',
           'inline',
           'inlines',
+          'inlined',
           'instanceof',
           'interop',
           'invoker',
