@@ -90,7 +90,7 @@ $ curl -i http://localhost:3000/api/commands/ \
 '
 ```
 
-5. Now you can query view model again and see the items you have added:
+5. Now you can query the view model again and see the items you have added:
 
 ```sh
 $ curl --g -X GET "http://localhost:3000/api/query/ShoppingList/12345-new-shopping-list" '
