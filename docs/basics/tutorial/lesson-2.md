@@ -2,18 +2,18 @@
 
 [\[Get the Code for This Lesson\]](https://github.com/reimagined/resolve/tree/master/examples/shopping-list-tutorial/lesson-2)
 
-This lesson will teach you how to implement a basic write side for your reSolve application. An application's [write side](resolve-app-structure.md#write-and-read-sides) handles commands, performs input validation and emits **events** based on valid commands. The framework then saves the emitted events to the **event store**.
+This lesson describes how to implement a basic write side for a reSolve application. An application's [write side](resolve-app-structure.md#write-and-read-sides) handles commands, performs input validation, and emits **events** based on valid commands. The framework then saves the emitted events to the **event store**.
 
-In the CQRS and Event Sourcing paradigms, commands are handled by Domain Objects grouped into aggregates. ReSolve implements aggregates as static objects that contain sets of functions. These functions can be of one of the following two kinds:
+In the CQRS and Event Sourcing paradigms, Domain Objects grouped into aggregates handle commands. ReSolve implements aggregates as static objects that contain sets of functions. These functions can be of one of the following types:
 
 - **[Command Handlers](write-side.md#aggregate-command-handlers)** - Handle commands and emit events in response.
 - **[Projections](write-side.md#aggregate-projection-function)** - Build aggregate state from events so this state can be observed on the write side, for example to perform input validation.
 
 ### Creating an Aggregate
 
-Use the following steps to implement the write side for your shopping list application.
+Use the following steps to implement the write side of your shopping list application:
 
-To add an aggregate to you shopping list application, first define types of events that this aggregate can produce. Create an **eventTypes.js** file in the project's **common** folder and add the following content to it.
+To add an aggregate to your shopping list application, define types of events that this aggregate can produce. Create an **eventTypes.js** file in the project's **common** folder and add the following content to it:
 
 **common/eventTypes.js:**
 
@@ -33,7 +33,7 @@ For now, your application requires only two event types:
 - SHOPPING_LIST_CREATED - Signals about creation of a shopping list;
 - The SHOPPING_ITEM_CREATED - Signals about creation of an item within a shopping list.
 
-Next, create a **shopping_list.commands.js** file in the **common/aggregates** folder. This file will contain command handlers for the ShoppingList aggregate. Add the following code to the file:
+Next, create a **shopping_list.commands.js** file in the **common/aggregates** folder to store command handlers for the ShoppingList aggregate. Add the following code to the file:
 
 **common/aggregates/shopping_list.commands.js:**
 
@@ -56,16 +56,16 @@ export default {
 }
 ```
 
-This file exports an object with two command handlers. A command handler receives the aggregate state and a command payload. A payload can contain any arbitrary data related to the command. For example, the **createShoppingList** command's payload contains a shopping list name, and the **createShoppingItem** command payload contains an item's ID and text to display.
+This file exports an object with two command handlers. A command handler receives the aggregate state and a command payload. A payload can contain any arbitrary data related to the command. For example, the **createShoppingList** command's payload contains the shopping list's name, and the **createShoppingItem** command payload contains an item's ID and display text.
 
-A command handler returns an event object. This object should contain the following obligatory fields:
+A command handler returns an event object. This object should contain the following fields:
 
 - **type** - specifies the event's type;
 - **payload** - specifies data associated with the event.
 
 In the example code, the event payload contains the same fields that were obtained from the command payloads. The reSolve framework saves events returned by command handlers to a persistent **[event store](write-side.md#event-store)**. For now, your application is configured to use a file-based event store, which is sufficient for learning purposes.
 
-Your minimal shopping list aggregate is now ready. The last step is to register it in the application's configuration file. Open the **config.app.js** file, locate the **aggregates** configuration section and specify the following settings:
+Your shopping list aggregate is now ready. The last step is to register it in the application's configuration file. To do this, open the **config.app.js** file and specify the following settings in the **aggregates** configuration section:
 
 **config.app.js:**
 
@@ -286,7 +286,7 @@ Content-Length: 31
 Command error: name is required
 
 
-# Trying to create a shopping list that already exists
+# When you create a shopping list that already exists
 $ curl -i http://localhost:3000/api/commands/ \
 > --header "Content-Type: application/json" \
 > --data '
@@ -307,7 +307,7 @@ Date: Thu, 22 Nov 2018 11:11:18 GMT
 Connection: keep-alive
 Content-Length: 43
 
-Command error: shopping list already exists
+Command error: the shopping list already exists
 
 
 # Trying to add an item to an inexistent shopping list
@@ -332,5 +332,5 @@ Date: Thu, 22 Nov 2018 11:16:56 GMT
 Connection: keep-alive
 Content-Length: 43
 
-Command error: shopping list does not exist
+Command error: the shopping list does not exist
 ```
