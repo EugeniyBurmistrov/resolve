@@ -63,7 +63,7 @@ A command handler returns an event object. This object should contain the follow
 - **type** - specifies the event's type;
 - **payload** - specifies data associated with the event.
 
-In the example code, the event payload contains the same fields that were obtained from the command payloads. The reSolve framework saves events returned by command handlers to a persistent **[event store](write-side.md#event-store)**. For now, your application is configured to use a file-based event store, which is sufficient for learning purposes.
+In the example code, the event payload contains the same fields that were obtained from the command payloads. The reSolve framework saves events that command handlers return to a persistent **[event store](write-side.md#event-store)**. For now, your application is configured to use a file-based event store, which is sufficient for learning purposes.
 
 Your shopping list aggregate is now ready. The last step is to register it in the application's configuration file. To do this, open the **config.app.js** file and specify the following settings in the **aggregates** configuration section:
 
@@ -82,7 +82,7 @@ aggregates: [
 
 ### Sending Commands to an Aggregate
 
-Now that your application can commands, you can use the reSolve framework's standard HTTP API to send such commands to create a shopping list and populate it with items.
+Now that your application can handle commands, you can use the reSolve framework's standard HTTP API to send such commands to create a shopping list and populate it with items.
 
 A request body should have the `application/json` content type and contain a JSON representation of the command:
 
@@ -261,7 +261,7 @@ In the example code, the SHOPPING_LIST_CREATED projection function adds the SHOP
   }
 ```
 
-You can check whether or not the validation works as intended by sending commands to your aggregate:
+You can check whether the validation works as intended by sending commands to your aggregate:
 
 ```sh
 # Trying to create a shopping list without specifying the name
