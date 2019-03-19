@@ -199,7 +199,7 @@ createShoppingItem: (state, { payload: { id, text } }) => {
 }
 ```
 
-To overcome the second and third flaws, you you can use the **aggregate state**. This state is assembled on the fly by an aggregate **projection** from previously created events. To add a projection to the ShoppingList aggregate, create a **shopping_list.projection.js** file in the **common/aggregates** folder and add the following code there:
+To overcome the second and third flaws, you can use the **aggregate state**. This state is assembled on the fly by an aggregate **projection** from previously created events. To add a projection to the ShoppingList aggregate, create a **shopping_list.projection.js** file in the **common/aggregates** folder and add the following code there:
 
 **common/aggregates/shopping_list.projection.js:**
 
@@ -261,7 +261,7 @@ In the example code, the SHOPPING_LIST_CREATED projection function adds the SHOP
   }
 ```
 
-You can check whether the validation works as intended by sending commands to your aggregate:
+You can send commands to your aggregate to check whether the validation works as intended:
 
 ```sh
 # Trying to create a shopping list without specifying the name
