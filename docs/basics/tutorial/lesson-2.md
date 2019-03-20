@@ -7,7 +7,7 @@ This lesson describes how to implement a basic write side for a reSolve applicat
 In the CQRS and Event Sourcing paradigms, Domain Objects grouped into aggregates handle commands. ReSolve implements aggregates as static objects that contain sets of functions. These functions can be of one of the following types:
 
 - **[Command Handlers](write-side.md#aggregate-command-handlers)** - Handle commands and emit events in response.
-- **[Projections](write-side.md#aggregate-projection-function)** - Build aggregate state from events so this state can be observed on the write side, for example to perform input validation.
+- **[Projections](write-side.md#aggregate-projection-function)** - Build aggregate state from events so this state can be checked on the write side, for example to perform input validation.
 
 ### Creating an Aggregate
 
@@ -17,21 +17,11 @@ To add an aggregate to your shopping list application, define types of events th
 
 **common/eventTypes.js:**
 
-<!-- prettier-ignore-start -->
-
-[embedmd]:# (../examples/shopping-list-tutorial/lesson-2/common/eventTypes.js /^/ /\n$/)
 ```js
-export const SHOPPING_LIST_CREATED = "SHOPPING_LIST_CREATED";
+export const SHOPPING_LIST_CREATED = 'SHOPPING_LIST_CREATED' // Signals about creation of a shopping list
 
-export const SHOPPING_ITEM_CREATED = "SHOPPING_ITEM_CREATED";
+export const SHOPPING_ITEM_CREATED = 'SHOPPING_ITEM_CREATED' // Signals about creation of an item within a shopping list
 ```
-
-<!-- prettier-ignore-end -->
-
-For now, your application requires only two event types:
-
-- SHOPPING_LIST_CREATED - Signals about creation of a shopping list;
-- The SHOPPING_ITEM_CREATED - Signals about creation of an item within a shopping list.
 
 Next, create a **shopping_list.commands.js** file in the **common/aggregates** folder to store command handlers for the ShoppingList aggregate. Add the following code to the file:
 
@@ -63,7 +53,10 @@ A command handler returns an event object. This object should contain the follow
 - **type** - specifies the event's type;
 - **payload** - specifies data associated with the event.
 
-In the example code, the event payload contains the same fields that were obtained from the command payloads. The reSolve framework saves events that command handlers return to a persistent **[event store](write-side.md#event-store)**. For now, your application is configured to use a file-based event store, which is sufficient for learning purposes.
+In the example code, the event payload contains the same fields that were obtained from the command payloads. The reSolve framework saves events that command handlers return to a persistent **[event store](write-side.md#event-store)**. Your application is already configured to use a file-based event store. We suggest that you keep this configuration throughout the tutorial. For information on how to use other storage types see the following documentation topics:
+
+- [Adapters](https://github.com/reimagined/resolve/blob/master/docs/advanced-techniques.md#adapters)
+- [Configuring Adapters](https://github.com/reimagined/resolve/blob/master/docs/preparing-to-production.md#configuring-adapters)
 
 Your shopping list aggregate is now ready. The last step is to register it in the application's configuration file. To do this, open the **config.app.js** file and specify the following settings in the **aggregates** configuration section:
 
@@ -97,7 +90,7 @@ A request body should have the `application/json` content type and contain a JSO
 }
 ```
 
-In addition to the aggregate name, command type and payload, this object specifies the aggregate Id (a unique identifier of an aggregate instance).
+In addition to the aggregate name, command type and payload, this object specifies the **aggregate ID** (a unique identifier of an aggregate instance).
 
 Run your application and send a POST request to the following URL:
 
@@ -105,7 +98,7 @@ Run your application and send a POST request to the following URL:
 http://127.0.0.1:3000/api/commands
 ```
 
-You can do this using any REST client or using **curl**. For example, use the following inputs to create a shopping list:
+You can use any REST client or **curl** to do this. For example, use the following inputs to create a shopping list:
 
 ```sh
 $ curl -i http://localhost:3000/api/commands/ \
@@ -158,8 +151,6 @@ Content-Length: 146
 
 ```
 
-Add a few more more items to have data to work with in future lessons.
-
 Now, you can check the event store file to see the newly created event. Open the **event-storage.db** file and locate the created event objects:
 
 <!-- prettier-ignore-start -->
@@ -179,7 +170,7 @@ Now, you can check the event store file to see the newly created event. Open the
 
 Your application's write side currently does not perform any input validation. This results in the following flaws:
 
-- The command handlers do not check whether or not all required fields are provided in a command's payload.
+- The command handlers do not check whether all required fields are provided in a command's payload.
 - It is possible to create more then one shopping list with the same aggregate ID.
 - You can create items in a shopping list that does not exist.
 
@@ -239,12 +230,12 @@ Register the create projection in the application configuration file:
 
 <!-- prettier-ignore-end -->
 
-The projection object should specify an obligatory **Init** function and a set of **projection functions**.
+The projection object specifies an **Init** function and a set of **projection functions**.
 
 - The Init function initializes the aggregate state. In the example code, it creates a new empty object.
 - Projection functions build the aggregate state based on the aggregate's events. Each such function is associated with a particular event type. The function receives the previous state and an event, and returns a new state based on the input.
 
-In the example code, the SHOPPING_LIST_CREATED projection function adds the SHOPPING_LIST_CREATED event's timestamp to the state. This information can be used on the write side to find out whether and when a shopping list has been created for the current aggregate instance (i.e., an instance identified by the current aggregate ID).
+In the example code, the SHOPPING_LIST_CREATED projection function adds the SHOPPING_LIST_CREATED event's timestamp to the state. This information can be used on the write side to find out whether and when a shopping list was created for the current aggregate instance (an instance that the current aggregate ID identifies).
 
 **common/aggregates/shopping_list.commands.js:**
 
