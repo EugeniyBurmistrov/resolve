@@ -160,7 +160,7 @@ Content-Length: 146
 
 Add a few more more items to have data to work with in future lessons.
 
-Now, you can check the event store file to see the newly created event. Open the **event-storage.db** file and locate the created event objects:
+You can now check the event store file to see the newly created event. Open the **event-storage.db** file and locate the created event objects:
 
 <!-- prettier-ignore-start -->
 
@@ -220,7 +220,7 @@ export default {
 
 <!-- prettier-ignore-end -->
 
-Register the create projection in the application configuration file:
+Register the create projection in the application's configuration file:
 
 **config.app.js:**
 
