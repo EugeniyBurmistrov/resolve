@@ -90,7 +90,7 @@ A request body should have the `application/json` content type and contain a JSO
 }
 ```
 
-In addition to the aggregate name, command type and payload, this object specifies the **aggregate ID** (a unique identifier of an aggregate instance).
+In addition to the aggregate name, command type and payload, this object specifies the aggregate's ID.
 
 Run your application and send a POST request to the following URL:
 
@@ -168,13 +168,13 @@ Now, you can check the event store file to see the newly created event. Open the
 
 ### Performing Validation
 
-Your application's write side currently does not perform any input validation. This results in the following flaws:
+Your application's write side currently does not perform any input validation. This results in the following issues:
 
 - The command handlers do not check whether all required fields are provided in a command's payload.
 - It is possible to create more then one shopping list with the same aggregate ID.
-- You can create items in a shopping list that does not exist.
+- You can create items in a in a nonexistent shopping list.
 
-You can overcome the first flaw by adding simple checks to each command handler:
+You can overcome the first issue by adding simple checks to each command handler:
 
 **common/aggregates/shopping_list.commands.js:**
 
@@ -190,7 +190,7 @@ createShoppingItem: (state, { payload: { id, text } }) => {
 }
 ```
 
-To overcome the second and third flaws, you can use the **aggregate state**. This state is assembled on the fly by an aggregate **projection** from previously created events. To add a projection to the ShoppingList aggregate, create a **shopping_list.projection.js** file in the **common/aggregates** folder and add the following code there:
+To overcome the second and third issues, you can use the **aggregate state**. This state is assembled on the fly by an aggregate **projection** from previously created events. To add a projection to the ShoppingList aggregate, create a **shopping_list.projection.js** file in the **common/aggregates** folder and add the following code there:
 
 **common/aggregates/shopping_list.projection.js:**
 
