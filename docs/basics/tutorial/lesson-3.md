@@ -2,7 +2,7 @@
 
 [\[Get the Code for This Lesson\]](https://github.com/reimagined/resolve/tree/master/examples/shopping-list-tutorial/lesson-3)
 
-Currently, your shopping list application has a write side that allows you to create shopping lists and items in these lists. In this lesson, you will implement the application's **[read side](resolve-app-structure.md#write-and-read-sides)** to answer data queries.
+Currently, your shopping list application has a write side that allows you to create shopping lists and items in these lists. To provide the capability to obtain this data from the application, you need to implement the application's **[read side](resolve-app-structure.md#write-and-read-sides)**.
 
 ### Add a View Model
 
@@ -58,7 +58,7 @@ viewModels: [
 
 ### Query a View Model via HTTP API
 
-You can now test the read side's functionality. Send an HTTP request to query the Shopping List View Model:
+You can now test the read side's functionality. Send an HTTP request to query the ShoppingList View Model:
 
 ```sh
 $  curl -i -g -X GET "http://localhost:3000/api/query/ShoppingList/shopping-list-1"
