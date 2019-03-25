@@ -2,7 +2,7 @@
 
 [\[Get the Code for This Lesson\]](https://github.com/reimagined/resolve/tree/master/examples/shopping-list-tutorial/lesson-3)
 
-Currently, your shopping list application has a write side that allows you to create shopping lists and items in these lists. To provide the capability to obtain this data from the application, you need to implement the application's **[read side](resolve-app-structure.md#write-and-read-sides)**.
+Currently, your shopping list application has a write side that allows you to create shopping lists and items in these lists. To obtain this data from the application, you need to implement the application's **[read side](resolve-app-structure.md#write-and-read-sides)**.
 
 ### Add a View Model
 
@@ -39,7 +39,7 @@ export default {
 
 <!-- prettier-ignore-end -->
 
-This code defines a View Model **[projection](read-side.md#updating-a-read-model-via-projection-functions)**. A View Model projection runs when the View Model receives a data query. It runs for all events with the specified aggregate IDs and builds state based on data from these event. The resulting state is then sent back as the query response.
+This code defines a View Model **[projection](read-side.md#updating-a-read-model-via-projection-functions)**. A View Model projection runs when the View Model receives a data query. It runs for all events with the specified aggregate IDs and builds a state based on data from these event. The resulting state is then sent back as the query response.
 
 Register the View Model in the application's configuration file as shown below.
 
