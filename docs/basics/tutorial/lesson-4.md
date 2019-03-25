@@ -2,13 +2,13 @@
 
 [\[Get the Code for This Lesson\]](https://github.com/reimagined/resolve/tree/master/examples/shopping-list-tutorial/lesson-4)
 
-This lesson provides information on how to display a View Model's data in the client browser. The lesson uses reSolve's **resolve-redux** library to implement a frontend based on React and Redux.
+This lesson provides information on how to display a View Model's data in the client browser. It uses the reSolve framework's **resolve-redux** library to implement a frontend based on React and Redux.
 
-Note that, if required, you can use the [standard HTTP API](curl.md) to communicate with a reSolve backend and use any client technology to implement the frontend.
+> Note that, if required, you can use the [standard HTTP API](curl.md) to communicate with a reSolve backend and use any client technology to implement the frontend.
 
 ### Implement a React Frontend
 
-The frontend's source files are located in the **client** folder by default. Create a **ShoppingList.js** file in the **client/containers** folder. In this file, implement a React component that displays a list of values obtained from the **[data](frontend.md#obtain-view-model-data)** prop:
+The frontend's source files are located in the **client** folder by default. Create a **ShoppingList.js** file in the **client/containers** folder. In this file, implement a React component that renders a list of values obtained from the **[data](frontend.md#obtain-view-model-data)** prop:
 
 **client/containers/ShoppingList.js:**
 
@@ -57,7 +57,7 @@ export default connectViewModel(mapStateToOptions)(ShoppingList)
 
 <!-- prettier-ignore-end -->
 
-The connectViewModel HOC binds the original component to a reSolve View Model based on options that the **mapStateToOptions** function specifies. The **data** prop in your component's implementation is injected by this HOC. This prop provides access to the View Model's response object. You already saw this object when you manually performed a request using the HTTP API in the lesson 3:
+This HOC binds the original component to a reSolve View Model based on options that the **mapStateToOptions** function specifies. The **data** prop in your component's implementation is injected by this HOC. This prop provides access to the View Model's response object. You already saw this object when you manually performed a request using the HTTP API in the lesson 3:
 
 ```js
 {
@@ -101,6 +101,6 @@ const App = () => (
 )
 ```
 
-Run your application to see the result:
+Run your application to view the result:
 
-![result](assets/tutorial/lesson4_result.png)
+![result](../../assets/tutorial/lesson4_result.png)
