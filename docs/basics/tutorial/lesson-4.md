@@ -16,7 +16,7 @@ The frontend's source files are located in the **client** folder. Create a **Sho
 
 [embedmd]:# (../examples/shopping-list-tutorial/lesson-4/client/containers/ShoppingList.js /\/\// /^\}/)
 ```js
-// The example code uses components from the react-bootstrap library to keep the markup compact.
+// The example code uses components from the react-bootstrap library to reduce the markup.
 import { ListGroup, ListGroupItem, Checkbox } from 'react-bootstrap'
 
 export class ShoppingList extends React.PureComponent {
