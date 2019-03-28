@@ -4,7 +4,7 @@
 
 This lesson provides information on how to display a View Model's data in the client browser. It uses the reSolve framework's **resolve-redux** library to implement a frontend based on React and Redux.
 
-> Note that, if required, you can use the [standard HTTP API](curl.md) to communicate with a reSolve backend and use any client technology to implement the frontend.
+> You can use the [standard HTTP API](curl.md) to communicate with a reSolve backend and use any client technology to implement the frontend.
 
 ### Implement a React Frontend
 
@@ -57,7 +57,7 @@ export default connectViewModel(mapStateToOptions)(ShoppingList)
 
 <!-- prettier-ignore-end -->
 
-This HOC binds the original component to a reSolve View Model based on options that the **mapStateToOptions** function specifies. The **data** prop in your component's implementation is injected by this HOC. This prop provides access to the View Model's response object. You already saw this object when you manually performed a request using the HTTP API in the lesson 3:
+This HOC binds the original component to a reSolve View Model based on options that the **mapStateToOptions** function specifies. This HOC provides the **data** prop in your component's implementation. This prop provides access to the View Model's response object.
 
 ```js
 {
