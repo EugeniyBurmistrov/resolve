@@ -8,7 +8,7 @@ This lesson provides information on how to display a View Model's data in the cl
 
 ### Implement a React Frontend
 
-The frontend's source files are located in the **client** folder by default. Create a **ShoppingList.js** file in the **client/containers** folder. In this file, implement a React component that renders a list of values obtained from the **[data](frontend.md#obtain-view-model-data)** prop:
+The frontend's source files are located in the **client** folder. Create a **ShoppingList.js** file in the **client/containers** folder. In this file, implement a React component that renders a list of values obtained from the **[data](frontend.md#obtain-view-model-data)** prop:
 
 **client/containers/ShoppingList.js:**
 
