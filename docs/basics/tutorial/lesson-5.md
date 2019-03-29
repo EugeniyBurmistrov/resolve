@@ -2,9 +2,11 @@
 
 [\[Get the Code for This Lesson\]](https://github.com/reimagined/resolve/tree/master/examples/shopping-list-tutorial/lesson-5)
 
+This lesson describes how to implement a visual interface required to edit shopping list items.
+
 ### Modify Backend Functionality
 
-Your application's backend already provides logic required to add new list items. Apply the following modifications to the server code to also provide the capability to check and uncheck items:
+Apply the following modifications to the server code to allow a user to check and uncheck items:
 
 1. Add a new event type that indicates that an item's checkbox was toggled.
 
@@ -19,7 +21,7 @@ export const SHOPPING_ITEM_TOGGLED = "SHOPPING_ITEM_TOGGLED";
 
 <!-- prettier-ignore-end -->
 
-2. Add a command handler that emits the SHOPPING_ITEM_TOGGLED event in response to the **toggleShoppingItem** command.
+2. Add a command handler for the **toggleShoppingItem** command.
 
 **common/aggregates/shopping_list.commands.js:**
 
@@ -41,9 +43,9 @@ export const SHOPPING_ITEM_TOGGLED = "SHOPPING_ITEM_TOGGLED";
 
 <!-- prettier-ignore-end -->
 
-The event payload contains the toggled item's identifier.
+The event payload contains the toggled item's ID.
 
-4. Modify the **ShoppingList** View Model projection to apply the **SHOPPING_ITEM_TOGGLED** events to the response data.
+4. Modify the **ShoppingList** View Model projection to take **SHOPPING_ITEM_TOGGLED** events into account.
 
 **common/view-models/shopping_list.projection.js:**
 
@@ -66,11 +68,11 @@ The event payload contains the toggled item's identifier.
 
 <!-- prettier-ignore-end -->
 
-### Implement Data Editing UI
+### Access Aggregate Commands on Frontend
 
-In the previous lesson, you connected your ShoppingList to a reSolve View Model. Because of this, the connected component's props already include an array of Redux action creators used to dispatch Redux actions on the client and send the corresponding commands to the reSolve application on the server. To make use of these action creators to implement editing in your application, update the ShoppingList component's View Model binding code as shown below:
+A component connected to a reSolve View Model receives an array of aggregate actions (Redux actions that send commands to a reSolve aggregate). Use the following code to generate action creators for these actions.
 
-**common/view-models/shopping_list.projection.js:**
+**client/containers/ShoppingList.js:**
 
 <!-- prettier-ignore-start -->
 
@@ -94,42 +96,13 @@ export default connectViewModel(mapStateToOptions)(
 
 <!-- prettier-ignore-end -->
 
-In this code, the component is first connected to a **Redux** state using the **connect** HOC from the **react-redux** library. Then, the component is connected to a reSolve View Model as in the previous lesson. The **connect** function is called with the specified **mapDispatchToProps** function. This function takes reSolve aggregate actions from the components payload and wraps them into a **dispatch** function call using the the **bindActionCreators** function.
+In this code, the component is first connected to a **Redux** state using the **connect** HOC from the **react-redux** library. Next, the component is connected to a reSolve View Model. The **mapDispatchToProps** function takes the reSolve aggregate actions from the component's payload and wraps every action into a **dispatch** call.
 
-Now the ShoppingList component's props include the **toggleShoppingItem** function.
+### Implement Data Editing UI
 
-**common/view-models/shopping_list.projection.js:**
+#### Item Creation
 
-```js
-render() {
-  const toggleShoppingItem = this.props.toggleShoppingItem;
-  ...
-```
-
-You can use this function to handle item selection on the client and send the **toggleShoppingItem** command to the server along with the required data in the payload.
-
-In the code below, the **toggleShoppingItem** function is used to handle checkbox click events.
-
-**client/containers/ShoppingList.js:**
-
-<!-- prettier-ignore-start -->
-
-[embedmd]:# (../examples/shopping-list-tutorial/lesson-5/client/containers/ShoppingList.js /^[[:space:]]+\<Checkbox/   /\<\/Checkbox\>/)
-```js
-              <Checkbox
-                inline
-                checked={todo.checked}
-                onChange={toggleShoppingItem.bind(null, 'shopping-list-1', {
-                  id: todo.id
-                })}
-              >
-                {todo.text}
-              </Checkbox>
-```
-
-<!-- prettier-ignore-end -->
-
-In the same way, you can use the **createShoppingItem** function to add new shopping list items. The UI markup is shown below:
+Use the **createShoppingItem** action creator to add new shopping list items. The UI markup is shown below:
 
 **common/view-models/shopping_list.projection.js:**
 
@@ -162,7 +135,7 @@ In the same way, you can use the **createShoppingItem** function to add new shop
 
 <!-- prettier-ignore-end -->
 
-This markup uses the following methods to handle UI interaction.
+This markup uses the following methods to handle UI interactions.
 
 **common/view-models/shopping_list.projection.js:**
 
@@ -192,6 +165,35 @@ onItemTextPressEnter = event => {
 }
 ```
 
-After these steps, your application's client UI should look as shown below.
+#### Item Selection
+
+Use the **toggleShoppingItem** action creator to toggle a checkbox for a shopping list item.
+
+**client/containers/ShoppingList.js:**
+
+```js
+render() {
+  const toggleShoppingItem = this.props.toggleShoppingItem;
+  ...
+```
+
+<!-- prettier-ignore-start -->
+
+[embedmd]:# (../examples/shopping-list-tutorial/lesson-5/client/containers/ShoppingList.js /^[[:space:]]+\<Checkbox/   /\<\/Checkbox\>/)
+```js
+              <Checkbox
+                inline
+                checked={todo.checked}
+                onChange={toggleShoppingItem.bind(null, 'shopping-list-1', {
+                  id: todo.id
+                })}
+              >
+                {todo.text}
+              </Checkbox>
+```
+
+<!-- prettier-ignore-end -->
+
+After the described steps, your application's UI should look as shown below.
 
 ![result](../../assets/tutorial/lesson5_result.png)
