@@ -2,7 +2,7 @@
 
 [\[Get the Code for This Lesson\]](https://github.com/reimagined/resolve/tree/master/examples/shopping-list-tutorial/lesson-5)
 
-This lesson describes how to implement a visual interface required to edit shopping list items.
+This lesson describes how to implement a visual interface that allows you to edit shopping list items.
 
 ### Modify Backend Functionality
 
@@ -70,7 +70,7 @@ The event payload contains the toggled item's ID.
 
 ### Access Aggregate Commands on Frontend
 
-A component connected to a reSolve View Model receives an array of aggregate actions (Redux actions that send commands to a reSolve aggregate). Use the following code to generate action creators for these actions.
+A component connected to a reSolve View Model receives an array of aggregate actions (Redux actions that send commands to a reSolve aggregate). Use the following code to generate action creators for these actions:
 
 **client/containers/ShoppingList.js:**
 
@@ -96,13 +96,13 @@ export default connectViewModel(mapStateToOptions)(
 
 <!-- prettier-ignore-end -->
 
-In this code, the component is first connected to a **Redux** state using the **connect** HOC from the **react-redux** library. Next, the component is connected to a reSolve View Model. The **mapDispatchToProps** function takes the reSolve aggregate actions from the component's payload and wraps every action into a **dispatch** call.
+In this code, the component is first connected to a **Redux** state using the **connect** HOC from the **react-redux** library. Next, the component is connected to a reSolve View Model. The **mapDispatchToProps** function takes the reSolve aggregate actions from the component's payload and wraps every action in a **dispatch** call.
 
 ### Implement Data Editing UI
 
 #### Item Creation
 
-Use the **createShoppingItem** action creator to add new shopping list items. The UI markup is shown below:
+Use the **createShoppingItem** action creator to add new shopping list items. The UI markup is shown below.
 
 **common/view-models/shopping_list.projection.js:**
 
@@ -135,7 +135,7 @@ Use the **createShoppingItem** action creator to add new shopping list items. Th
 
 <!-- prettier-ignore-end -->
 
-This markup uses the following methods to handle UI interactions.
+This markup uses the following methods to handle UI interactions:
 
 **common/view-models/shopping_list.projection.js:**
 
@@ -167,7 +167,7 @@ onItemTextPressEnter = event => {
 
 #### Item Selection
 
-Use the **toggleShoppingItem** action creator to toggle a checkbox for a shopping list item.
+Use the **toggleShoppingItem** action creator to toggle a shopping list item's checkbox.
 
 **client/containers/ShoppingList.js:**
 
@@ -194,6 +194,6 @@ render() {
 
 <!-- prettier-ignore-end -->
 
-After the described steps, your application's UI should look as shown below.
+After these steps, your application's UI should look as shown below.
 
 ![result](../../assets/tutorial/lesson5_result.png)
