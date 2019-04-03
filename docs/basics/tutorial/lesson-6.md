@@ -2,28 +2,15 @@
 
 [\[Get the Code for This Lesson\]](https://github.com/reimagined/resolve/tree/master/examples/shopping-list-tutorial/lesson-6)
 
-In the+hopping list. However, you may have noticed that your application's functionality is incomplete: it is possible use HTTP API to create multiple shopping lists, but the client UI only allows an end uesr to view and edit only one specific list, namely **shopping-list-1**:
-
-**client/containers/ShoppingList.js:**
-
-```jsx
-export const mapStateToOptions = (state, ownProps) => {
-  return {
-    viewModelName: 'ShoppingList',
-    aggregateIds: ['shopping-list-1']
-  }
-}
-```
-
-In this lesson, you will enhance your application's functionality with the capability to create multiple shopping lists, navigate between these lists and add items to them from the client UI.
+Currently, your Shopping List application's UI only allows and end-user to view and edit a single shopping list (**shopping-list-1**). This lesson provides information on how you can enhance your application's functionality with the capability to create multiple shopping lists, navigate between these lists from the client UI.
 
 ### Implement a Shopping Lists Read Model
 
-In the [Lesson 3](#lesson-3-read-side-create-a-view-model-to-query-list-items), you have implemented a View Model used to obtain information about shopping lists with the specified aggregate ID's. Although it is possible to use the same approach to obtain the list of all available shopping lists, there is a strong reason not to do so.
+First, you need to modify the application's backend so it can provide information about all available shopping lists. You can implement a View Model to achieve this goal, but this approach is inefficient.
 
-Consider a situation, in which your application runs in a production environment for a long time and a large number of shopping lists is created. If you used a View Model to answer queries, a resulting data sample would be generated on the fly for every requests based on events from the beginning of the history. Thish would result in a huge performance overhead on _each request_. Note that it is not a problem when you use a View Model to obtain a single list's items as the item count is always considerably small.
+Consider a situation when your application runs in a production environment for a long time and end-users have created a large number of shopping lists. In such situation, a View Model's projection would apply every event from the store to the response object. This would result in a considerable performance overhead _on every request_.
 
-To overcome this issue, implement a ShoppingLists **[Read Model](read-side.md#read-models)**. This Read Model will gradually accumulate its state based on the incoming events and store this state in the Read Model Storage. This part of the functionality is implemented by the Read Model **[projection](read-side.md)**:
+Use a **[Read Model](read-side.md#read-models)** to overcome this limitation. The code sample below demonstrates the ShoppingLists Read Model's projection.
 
 **common/read-models/shopping_lists.projection.js:**
 
@@ -60,7 +47,7 @@ export default {
 
 <!-- prettier-ignore-end -->
 
-You also need to implement **[resolver functions](read-side.md#resolvers)** that use the accumulated data to answer queries.
+A Read Model's projection functions apply event data to a persistent store. You also need to implement a **[query resolver](read-side.md#resolvers)** to answer data queries based on the data from the store.
 
 **common/read-models/shopping_lists.resolvers.js:**
 
@@ -77,9 +64,9 @@ export default {
 
 <!-- prettier-ignore-end -->
 
-In this example, the **all** resolver function is used to obtain all available shopping lists.
+In this example, the **all** resolver returns all available shopping lists.
 
-Register the created Read Model in the application's configuration file:
+Next, register the created Read Model in the application's configuration file.
 
 **config.app.js:**
 
@@ -97,8 +84,6 @@ Register the created Read Model in the application's configuration file:
 ```
 
 <!-- prettier-ignore-end -->
-
-Note that regular Read Models are not reactive like View Models are. This results in several side effects, that will be discussed in greater detail later in this lesson.
 
 ### Query a Read Model Through HTTP API
 
@@ -129,7 +114,7 @@ $ curl -X POST \
 
 ### Implement Client UI
 
-Now you can implement the UI to display all available shopping list and create new shopping lists.
+You can now implement the UI to display all available shopping lists and create new shopping lists.
 
 **client/containers/MyLists.js:**
 
@@ -155,9 +140,9 @@ class MyLists extends React.PureComponent {
 
 <!-- prettier-ignore-end -->
 
-See the **shoppingLists** and **shoppingListsCreator** files to see the details of these components' implementation.
+> Refer to example project's [ShoppingLists.js](https://github.com/reimagined/resolve/blob/master/examples/shopping-list-tutorial/lesson-6/client/components/ShoppingLists.js) and [ShoppingListsCreator.js](https://github.com/reimagined/resolve/blob/master/examples/shopping-list-tutorial/lesson-6/client/components/ShoppingListCreator.j) files to see how you can implement these components.
 
-The implemented container component is bound to the ShoppingLists Read Model as shown below:
+Connect the MyLists container component to the ShoppingLists Read Model as shown below.
 
 **client/containers/MyLists.js:**
 
@@ -183,7 +168,7 @@ export default connectReadModel(mapStateToOptions)(
 )
 ```
 
-Now that your application has two main views, you need to provide means of navigation between them. To achieve this goal, you need to configure the react router.
+Configure the React router to enable navigation between the application pages.
 
 **client/routes.js:**
 
@@ -250,7 +235,7 @@ export default App
 
 <!-- prettier-ignore-end -->
 
-Also, modify the **ShoppingList** component so it obtains the list aggregate ID from the **:id** route parameter and displays proper items.
+Additionally, modify the **ShoppingList** component so it obtains the selected shopping list's aggregate ID from the **:id** route parameter.
 
 **client/containers/ShoppingList.js:**
 
@@ -273,17 +258,15 @@ export const mapStateToProps = (state, ownProps) => {
 }
 ```
 
-For now, binding a component to a reSolve Read Model looks similar to how you bound the ShoppingList component to a View Model in the [Lesson 4](#lesson-4-frontend-display-view-model-data-in-the-browser). Run, your application and try adding a new shopping list using the implemented UI.
+If you run your application and try to create a new shopping list. You will notice that the frontend correctly sends commands to the server, but the created shopping list only appears after you refresh the page. This is an expected behavior because Read Models are not reactive in contrast to View Models. This means that components connected to Read Models do not automatically synchronize their Redux state with the Read Model state on the server.
 
-You will notice that although you application correctly sends commands to the backend, the client UI does not reflect the change made to the application state. A newly created shopping list only appears after you refresh the page. This is an expected behavior because Read Models are not reactive by default. This means that components connected to Read Models do not automatically synchronize their Redux state with the Read Model state on the server.
-
-You can overcome this limitation by introducing optimistic UI updates as the next section describes.
+To overcome this limitation, implement optimistic UI updates as the next section describes.
 
 ### Support Optimistic UI Updates
 
-With the optimistic UI updating approach, a component applies model changes to the client Redux state before it sends the changes to the server using an aggregate command. Follow the steps below to provide such functionality.
+With this approach, a component applies model changes to the Redux state before it sends these changes to the server using an aggregate command. Follow the steps below to provide such functionality.
 
-First, define Redux actions that performs updates:
+First, define Redux actions that perform state updates.
 
 **client/actions/optimistic_actions.js:**
 
@@ -297,7 +280,7 @@ export const OPTIMISTIC_SYNC = 'OPTIMISTIC_SYNC'
 
 <!-- prettier-ignore-end -->
 
-Implement an optimistic reducer function that responds to these actions to update the corresponding slice of the Redux state:
+Implement an optimistic reducer function that handles these actions to update the corresponding slice of the Redux state.
 
 **client/reducers/optimistic_shopping_lists.js:**
 
@@ -339,7 +322,7 @@ export default optimistic_shopping_lists
 
 <!-- prettier-ignore-end -->
 
-Provide a middleware that intercepts the service actions used for communication between Redux and reSolve:
+Provide a middleware that intercepts the service actions used for communication between Redux and reSolve.
 
 **client/reducers/optimistic_shopping_lists_middleware.js:**
 
@@ -386,7 +369,7 @@ export default optimistic_shopping_lists_middleware
 
 <!-- prettier-ignore-end -->
 
-Modify the **mapStateToProps** function implementation for the MyLists component so that component props are bound to the implemented slice of the Redux state:
+Modify the MyLists component's **mapStateToProps** function to obtain the component's props from the corresponding slice of the Redux state:
 
 ```jsx
 export const mapStateToProps = (state, ownProps) => ({
@@ -394,6 +377,6 @@ export const mapStateToProps = (state, ownProps) => ({
 })
 ```
 
-Now, if you run your application and create a new shopping list, the created shopping list will be displayed immediately.
+Run your application and try to create a new shopping list.
 
 ---
