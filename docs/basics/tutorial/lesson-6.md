@@ -2,7 +2,7 @@
 
 [\[Get the Code for This Lesson\]](https://github.com/reimagined/resolve/tree/master/examples/shopping-list-tutorial/lesson-6)
 
-Currently, your Shopping List application's UI only allows and end-user to view and edit a single shopping list (**shopping-list-1**). This lesson provides information on how you can enhance your application's functionality with the capability to create multiple shopping lists, navigate between these lists from the client UI.
+Currently, your Shopping List application's UI only allows users to view and edit one shopping list (**shopping-list-1**). This lesson describes how to create multiple shopping lists and navigate between these lists from the client UI.
 
 ### Implement a Shopping Lists Read Model
 
