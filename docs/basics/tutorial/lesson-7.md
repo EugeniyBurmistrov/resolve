@@ -235,7 +235,7 @@ export default connectStaticBasedUrls(['css', 'favicon'])(Header)
 />
 ```
 
-#### Update the Optimistic Update Code
+#### Update the Optimistic Updates Code
 
 Modify the code related to optimistic UI updates to support the shopping list deletion.
 
