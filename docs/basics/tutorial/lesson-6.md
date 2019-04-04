@@ -6,7 +6,7 @@ Currently, your Shopping List application's UI only allows and end-user to view 
 
 ### Implement a Shopping Lists Read Model
 
-First, you need to modify the application's backend so it can provide information about all available shopping lists. You can implement a View Model to achieve this goal, but this approach is inefficient.
+First, modify the application's backend so it can provide information about all available shopping lists. You can implement a View Model to achieve this goal, but this approach is inefficient.
 
 Consider a situation when your application runs in a production environment for a long time and end-users have created a large number of shopping lists. In such situation, a View Model's projection would apply every event from the store to the response object. This would result in a considerable performance overhead _on every request_.
 
@@ -258,13 +258,13 @@ export const mapStateToProps = (state, ownProps) => {
 }
 ```
 
-If you run your application and try to create a new shopping list. You will notice that the frontend correctly sends commands to the server, but the created shopping list only appears after you refresh the page. This is an expected behavior because Read Models are not reactive in contrast to View Models. This means that components connected to Read Models do not automatically synchronize their Redux state with the Read Model state on the server.
+Run the application and try to create a new shopping list. You will notice that the frontend correctly sends commands to the server, but the created shopping list only appears after you refresh the page. This is an expected behavior because, in contrast to View Models, Read Models are not reactive. This means that components connected to Read Models do not automatically synchronize their Redux state with the Read Model's state on the server.
 
 To overcome this limitation, implement optimistic UI updates as the next section describes.
 
 ### Support Optimistic UI Updates
 
-With this approach, a component applies model changes to the Redux state before it sends these changes to the server using an aggregate command. Follow the steps below to provide such functionality.
+With this approach, a component applies model changes to the Redux state before it sends these changes to the server. Follow the steps below to provide such functionality.
 
 First, define Redux actions that perform state updates.
 
@@ -377,6 +377,6 @@ export const mapStateToProps = (state, ownProps) => ({
 })
 ```
 
-Run your application and try to create a new shopping list.
+Run your application and create a new shopping list to view the result.
 
 ---
