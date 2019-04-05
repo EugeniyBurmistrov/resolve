@@ -24,7 +24,7 @@ export const SHOPPING_LIST_REMOVED = 'SHOPPING_LIST_REMOVED'
 export const SHOPPING_ITEM_REMOVED = 'SHOPPING_ITEM_REMOVED'
 ```
 
-Modify the aggregate projection to allow you to delete the shopping list.
+Modify the aggregate projection to allow you to delete a shopping list.
 
 **common/aggregates/shopping_list.projection.js:**
 
