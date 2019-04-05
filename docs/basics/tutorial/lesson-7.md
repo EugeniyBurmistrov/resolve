@@ -2,11 +2,17 @@
 
 [\[Get the Code for This Lesson\]](https://github.com/reimagined/resolve/tree/master/examples/shopping-list-tutorial/lesson-7)
 
-This lesson describes additional steps that you can follow to enhance various aspects of the Shopping List application's functionality.
+The lesson describes how to perform the following enhancements to the Shopping List application's functionality:
 
-### Modify the Write Side
+- Modify the reSolve backend to provide the complete set of CRUD (create, read, update, delete) operations.
+- Modify the frontend to support all CRUD operations.
+- Add static resources to the frontend.
 
-Define additional events to implement the full set of CRUD (create, read, update, delete) operations.
+### Modify the Backend
+
+#### Update the Write Side
+
+Define the following events to support the full set of CRUD operations on the backend.
 
 **common/event_types.js:**
 
@@ -54,7 +60,7 @@ Define command handlers used to edit data.
   }
 ```
 
-### Modify the Read Side
+#### Update the Read Side
 
 Modify the ShoppingList View Model projection to handle the new event types.
 
@@ -105,11 +111,11 @@ Add the required static content to the application's **static** folder. The exam
 
 - The **Styles.css** file - Contains styles used by the application's client components.
 - The **fontawesome.min.css** file an the **webfonts** folder - The standard [Font Awesome](https://fontawesome.com/) distribution.
-- The **close-button.png** image - An icon that the button used to remove shopping list items displays.
+- The **close-button.png** image - The Remove Shopping List button's icon.
 
 #### Update Components
 
-Modify the ShoppingLists component to provide UI for shopping list deletion.
+Modify the ShoppingLists component to provide a UI for shopping list deletion.
 
 **client/components/ShoppingLists.js:**
 
