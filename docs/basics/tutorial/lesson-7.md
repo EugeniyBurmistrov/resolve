@@ -2,7 +2,7 @@
 
 [\[Get the Code for This Lesson\]](https://github.com/reimagined/resolve/tree/master/examples/shopping-list-tutorial/lesson-7)
 
-The lesson describes how to perform the following enhancements to the Shopping List application's functionality:
+The lesson describes how to make the following enhancements to the Shopping List application:
 
 - Modify the reSolve backend to provide the complete set of CRUD (create, read, update, delete) operations.
 - Modify the frontend to support all CRUD operations.
@@ -12,7 +12,7 @@ The lesson describes how to perform the following enhancements to the Shopping L
 
 #### Update the Write Side
 
-Define the following events to support the full set of CRUD operations on the backend.
+Define the following events to implement the full set of CRUD (create, read, update, delete) operations:
 
 **common/event_types.js:**
 
