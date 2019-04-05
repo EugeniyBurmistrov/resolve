@@ -24,7 +24,7 @@ export const SHOPPING_LIST_REMOVED = 'SHOPPING_LIST_REMOVED'
 export const SHOPPING_ITEM_REMOVED = 'SHOPPING_ITEM_REMOVED'
 ```
 
-Modify the aggregate projection to enable the shopping list deletion.
+Modify the aggregate projection to allow you to delete the shopping list.
 
 **common/aggregates/shopping_list.projection.js:**
 
@@ -107,9 +107,9 @@ Modify the ShoppingLists Read Model projection.
 
 #### Use Static Content
 
-Add the required static content to the application's **static** folder. The example application uses the following static files:
+Add the static content to the application's **static** folder. The example application uses the following static files:
 
-- The **Styles.css** file - Contains styles used by the application's client components.
+- The **Styles.css** file - Contains styles the application's client components use.
 - The **fontawesome.min.css** file an the **webfonts** folder - The standard [Font Awesome](https://fontawesome.com/) distribution.
 - The **close-button.png** image - The Remove Shopping List button's icon.
 
@@ -141,7 +141,7 @@ const { lists, createShoppingList, removeShoppingList } = this.props
 <ShoppingLists lists={lists} removeShoppingList={removeShoppingList} />
 ```
 
-Modify the ShoppingList component to provide the capability to rename shopping lists.
+Modify the ShoppingList component to allow users to rename shopping lists.
 
 **client/containers/ShoppingList.js:**
 
@@ -199,7 +199,7 @@ const {
 />
 ```
 
-The code below demonstrates the **Image** component's implementation.
+The code below implements the **Image** component.
 
 **client/containers/Image.js:**
 
